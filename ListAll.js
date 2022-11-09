@@ -1,15 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { ListItem } from'react-native-elements';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-export default function ListAll( { route, navigation }) {
-    console.log( route );
+import { initializeApp } from 'firebase/app';
+import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 
-const { records: records } = route.params;
+export default function ListAll() {
 
-useEffect(() => { listAll(records); }, []);
+const firebaseConfig = {
+  apiKey: "AIzaSyCB8CYBy8ct60eZfWFklKEyUPsYd3vlkO0",
+  authDomain: "musicapp-8225d.firebaseapp.com",
+  databaseURL: "https://musicapp-8225d-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "musicapp-8225d",
+  storageBucket: "musicapp-8225d.appspot.com",
+  messagingSenderId: "43560440428",
+  appId: "1:43560440428:web:d4996c1e04bffaaae43e49",
+  measurementId: "G-SPYF3DGHRD"
+  };
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+const [records, setRecords] = useState([]);
+
+useEffect(() => {
+  const itemsRef = ref(database, 'records/');
+  onValue(itemsRef, (snapshot) => {
+      const data = snapshot.val();
+      const records = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : [];  
+      setRecords(records);
+  });
+}, []);
+
+const deleteProduct = (key) => {
+  remove(
+    ref(database, 'records/' + key),
+  )
+}
 
 const listSeparator = () => {
     return(
@@ -18,22 +48,23 @@ const listSeparator = () => {
                 height: 5,
                 width: '80%',
                 backgroundColor: '#fff',
-                marginLeft: '10%'
+                marginLeft: '80%'
             }}
         />
     );
 };
 
-const listAll = ({ records }) => (
+renderItem = ({ item }) => (
     <ListItem bottomDivider>
       <ListItem.Content>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 10 }}>
-        <ListItem.Title>{ records[0].artist }</ListItem.Title>
-        <ListItem.Subtitle>{ records[0].album }</ListItem.Subtitle>
+        <ListItem.Title>{ item.artist }</ListItem.Title>
+        <ListItem.Subtitle>{ item.album }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.year }</ListItem.Subtitle>
         </View>
         <View style={{ flex: 1 }}>
-        <MaterialCommunityIcons name="md-trash-bin" size={ 30 }
+        <MaterialCommunityIcons name="trash-can" size={ 30 }
               onPress={() => deleteProduct(item.key)} />
           </View>
         </View>
