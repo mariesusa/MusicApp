@@ -10,7 +10,7 @@ import database from './Firebase'
 
 export default function Edit ({ route, navigation }) {
     console.log( route );
-//const { records } = route.params;
+const { records } = route.params;
 
 const [formatOpen, setFormatOpen] = useState(false);
 const [formatValue, setFormatValue] = useState(null);

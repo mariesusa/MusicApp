@@ -49,7 +49,7 @@ const [records, setRecords] = useState([]);
 const saveRecord = () => {
     push(
         ref(database, 'records/'),
-        { 'artist': artist, 'album': album, 'year': year, 'format': format, 'genre': genre, 'condition': condition, 'picture': picture, 'info': info }
+        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'picture': picture, 'info': info }
     );
 }
 

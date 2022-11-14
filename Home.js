@@ -27,7 +27,7 @@ export default function Home() {
   );  
 }
 
-/*class Home extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <View styles={ styles.container }>
@@ -48,7 +48,7 @@ export default function Home() {
       </View>
     )
   }
-}*/
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-//ReactDOM.render(<Home />, mountNode);
+ReactDOM.render(<Home />, mountNode);
 
-//export default Home;
+export default Home;
 
