@@ -57,7 +57,7 @@ renderItem = ({ item }) => (
         <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
               onPress={(key) => navigation.navigate('Edit', { 
                                                 Screen: 'Edit',
-                                                //params: { item: item.key }
+                                                //params: { records }
                                               })}
         />
           </View>

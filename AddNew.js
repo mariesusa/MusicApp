@@ -81,6 +81,7 @@ return (
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
+                onChangeValue={ (formatValue) => setFormatValue(formatValue)}
                 placeholder='Select format'   
         />
         
@@ -99,6 +100,7 @@ return (
                 setOpen={ setConditionOpen }
                 setValue={ setConditionValue }
                 setItems={ setCondition }
+                onChangeValue={ (conditionValue) => setConditionValue(conditionValue)}
                 placeholder='Select condition'   
         />
 

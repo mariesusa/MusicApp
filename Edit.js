@@ -6,12 +6,12 @@ import database from './Firebase'
 
 export default function Edit ({ route, navigation }) {
     console.log( route );
-//const { item } = route.params;
+const { records } = route.params;
 
 return (
     <View style={ styles.container }>
         <Text>
-            Show things here
+            Show things here { records }
         </Text>
     </View>
 );
