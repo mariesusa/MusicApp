@@ -5,24 +5,10 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { ListItem } from'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import database from './Firebase'
 
-export default function ListAll() {
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCB8CYBy8ct60eZfWFklKEyUPsYd3vlkO0",
-  authDomain: "musicapp-8225d.firebaseapp.com",
-  databaseURL: "https://musicapp-8225d-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "musicapp-8225d",
-  storageBucket: "musicapp-8225d.appspot.com",
-  messagingSenderId: "43560440428",
-  appId: "1:43560440428:web:d4996c1e04bffaaae43e49",
-  measurementId: "G-SPYF3DGHRD"
-  };
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+export default function ListAll( { navigation } ) {
 
 const [records, setRecords] = useState([]);
 
@@ -64,8 +50,16 @@ renderItem = ({ item }) => (
         <ListItem.Subtitle>{ item.year }</ListItem.Subtitle>
         </View>
         <View style={{ flex: 1 }}>
-        <MaterialCommunityIcons name="trash-can" size={ 30 }
+        <MaterialCommunityIcons name='trash-can' size={ 30 }
               onPress={() => deleteProduct(item.key)} />
+          </View>
+        <View style={{ flex: 1 }}>
+        <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
+              onPress={(key) => navigation.navigate('Edit', { 
+                                                Screen: 'Edit',
+                                                //params: { item: item.key }
+                                              })}
+        />
           </View>
         </View>
       </ListItem.Content>
