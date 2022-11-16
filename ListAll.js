@@ -62,7 +62,6 @@ renderItem = ({ item }) => (
         <View style={{ flex: 1 }}>
         <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
               onPress={() => {(navigation.navigate('Edit',
-                                                    {Screen: 'Edit details'},
                                                 { item }
                                               ));
                                               }}                                              
