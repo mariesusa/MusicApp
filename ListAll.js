@@ -18,6 +18,7 @@ useEffect(() => {
       const data = snapshot.val();
       const records = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : [];  
       setRecords(records);
+      console.log(records)
   });
 }, []);
 
@@ -48,6 +49,11 @@ renderItem = ({ item }) => (
         <ListItem.Title>{ item.artist }</ListItem.Title>
         <ListItem.Subtitle>{ item.album }</ListItem.Subtitle>
         <ListItem.Subtitle>{ item.year }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.format }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.genre }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.condition }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.picture }</ListItem.Subtitle>
+        <ListItem.Subtitle>{ item.info }</ListItem.Subtitle>
         </View>
         <View style={{ flex: 1 }}>
         <MaterialCommunityIcons name='trash-can' size={ 30 }
@@ -55,10 +61,11 @@ renderItem = ({ item }) => (
           </View>
         <View style={{ flex: 1 }}>
         <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
-              onPress={(key) => navigation.navigate('Edit', { 
-                                                Screen: 'Edit',
-                                                params: { key }
-                                              })}
+              onPress={() => {(navigation.navigate('Edit',
+                                                    {Screen: 'Edit details'},
+                                                { item }
+                                              ));
+                                              }}                                              
         />
           </View>
         </View>

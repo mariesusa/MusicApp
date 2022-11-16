@@ -4,13 +4,14 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { FlatList } from 'react-native';
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
 
 export default function Edit ({ route, navigation }) {
-    console.log( route );
-const { records } = route.params;
+console.log( route );
+const { item } = route.params;
 
 const [formatOpen, setFormatOpen] = useState(false);
 const [formatValue, setFormatValue] = useState(null);
@@ -33,11 +34,16 @@ const [condition, setCondition] = useState([
 
 return (
     <View style={ styles.container }>
-        
+
+        <View>
+            { item.artist }
+        </View>
+
         <Text style={{marginTop: 10}}></Text>
 
         <Input
             label='Artist'
+            placeholder={ item.artist }
         />
 
         <Input
