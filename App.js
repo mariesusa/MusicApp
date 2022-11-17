@@ -13,19 +13,11 @@ const Stack = createNativeStackNavigator();
 const EditingStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function EditingStackScreen() {
-  return (
-    <EditingStack.Navigator>
-      <EditingStack.Screen name='Edit details' component={ Edit } />
-    </EditingStack.Navigator>
-  );
-}
-
 function Editing() {
   return (
       <Stack.Navigator>
         <Stack.Screen name='ListAll' component={ ListAll } options={{ headerShown: false }} />
-        <Stack.Screen name='Edit' component={ EditingStackScreen } options={{ headerShown: false }} />
+        <Stack.Screen name='Edit' component={ Edit } options={{ headerShown: false }} />
       </Stack.Navigator>
   );
 }

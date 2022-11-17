@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements/dist/buttons/Button';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FlatList } from 'react-native';
 
-import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import { getDatabase, push, ref, onValue, remove, update } from 'firebase/database';
 import database from './Firebase'
 
 export default function Edit ({ route, navigation }) {
@@ -32,12 +32,15 @@ const [condition, setCondition] = useState([
     { label: 'Fair', value: 'fair' },
 ]);
 
+const updateRecord = () => {
+    update(
+        ref(database, 'records/'),
+        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'picture': picture, 'info': info }
+    );
+}
+
 return (
     <View style={ styles.container }>
-
-        <View>
-            { item.artist }
-        </View>
 
         <Text style={{marginTop: 10}}></Text>
 
@@ -48,10 +51,12 @@ return (
 
         <Input
             label='Album'
+            placeholder={ item.album }
         />
 
         <Input
             label='Year'
+            placeholder={ item.year }
         />
 
         <DropDownPicker
@@ -61,13 +66,14 @@ return (
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
-                placeholder='Select format'   
+                placeholder={ item.album }
         />
         
         <Text style={{marginTop: 10}}></Text>
 
         <Input
             label='Genre'
+            placeholder={ item.genre }
         />
 
         <DropDownPicker
@@ -77,17 +83,19 @@ return (
                 setOpen={ setConditionOpen }
                 setValue={ setConditionValue }
                 setItems={ setCondition }
-                placeholder='Select condition'   
+                placeholder={ item.condition }
         />
 
         <Text style={{marginTop: 10}}></Text>
         
         <Input
             label='Picture'
+            placeholder={ item.picture }
         />
 
         <Input
             label='Info'
+            placeholder={ item.info }
         />
 
         <Button
@@ -100,6 +108,7 @@ return (
             containerStyle={{ width: '60%' }}
                 icon={{ name: 'save', color: '#fff' }}
                 title='UPDATE'
+                onPress={() => updateRecord()}
         />
     </View>
 );

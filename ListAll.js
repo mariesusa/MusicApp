@@ -22,7 +22,7 @@ useEffect(() => {
   });
 }, []);
 
-const deleteProduct = (key) => {
+const deleteAlbum = (key) => {
   remove(
     ref(database, 'records/' + key),
   )
@@ -57,7 +57,7 @@ renderItem = ({ item }) => (
         </View>
         <View style={{ flex: 1 }}>
         <MaterialCommunityIcons name='trash-can' size={ 30 }
-              onPress={() => deleteProduct(item.key)} />
+              onPress={() => deleteAlbum(item.key)} />
           </View>
         <View style={{ flex: 1 }}>
         <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
