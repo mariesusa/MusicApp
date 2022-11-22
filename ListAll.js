@@ -16,7 +16,7 @@ useEffect(() => {
   const itemsRef = ref(database, 'records/');
   onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
-      const records = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : [];  
+      const records = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : [];
       setRecords(records);
       console.log(records)
   });

@@ -13,6 +13,10 @@ export default function Edit ({ route, navigation }) {
 console.log( route );
 const { item } = route.params;
 
+const [artist, setArtist] = useState(item.artist);
+const [album, setAlbum] = useState(item.album);
+const [year, setYear] = useState(item.year);
+
 const [formatOpen, setFormatOpen] = useState(false);
 const [formatValue, setFormatValue] = useState(null);
 const [format, setFormat] = useState([
@@ -20,6 +24,8 @@ const [format, setFormat] = useState([
     { label: 'CD', value: 'cd' },
     { label: 'Cassette', value: 'cassette' },
 ]);
+
+const [genre, setGenre] = useState(item.genre);
 
 const [conditionOpen, setConditionOpen] = useState(false);
 const [conditionValue, setConditionValue] = useState(null);
@@ -32,9 +38,14 @@ const [condition, setCondition] = useState([
     { label: 'Fair', value: 'fair' },
 ]);
 
+const [picture, setPicture] = useState(item.picture);
+const [info, setInfo] = useState(item.info);
+
+const albumKey = item.key
+
 const updateRecord = () => {
     update(
-        ref(database, 'records/'),
+        ref(database, 'records/' + albumKey),
         { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'picture': picture, 'info': info }
     );
 }
@@ -47,16 +58,19 @@ return (
         <Input
             label='Artist'
             placeholder={ item.artist }
+            onChangeText={ artist => setArtist(artist) } 
         />
 
         <Input
             label='Album'
             placeholder={ item.album }
+            onChangeText={ album => setAlbum(album) }
         />
 
         <Input
             label='Year'
             placeholder={ item.year }
+            onChangeText={ year => setYear(year) }
         />
 
         <DropDownPicker
@@ -66,7 +80,8 @@ return (
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
-                placeholder={ item.album }
+                placeholder={ item.format }
+                onChangeValue={ (formatValue) => setFormatValue(formatValue) }
         />
         
         <Text style={{marginTop: 10}}></Text>
@@ -74,6 +89,7 @@ return (
         <Input
             label='Genre'
             placeholder={ item.genre }
+            onChangeText={ genre => setGenre(genre) }
         />
 
         <DropDownPicker
@@ -91,11 +107,13 @@ return (
         <Input
             label='Picture'
             placeholder={ item.picture }
+            onChangeText={ picture => setPicture(picture) }
         />
 
         <Input
             label='Info'
             placeholder={ item.info }
+            onChangeText={ info => setInfo(info) }
         />
 
         <Button

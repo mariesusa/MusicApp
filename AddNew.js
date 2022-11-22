@@ -81,7 +81,7 @@ return (
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
-                onChangeValue={ (formatValue) => setFormatValue(formatValue)}
+                onChangeValue={ (formatValue) => setFormatValue(formatValue) }
                 placeholder='Select format'   
         />
         
