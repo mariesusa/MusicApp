@@ -18,7 +18,7 @@ const [album, setAlbum] = useState(item.album);
 const [year, setYear] = useState(item.year);
 
 const [formatOpen, setFormatOpen] = useState(false);
-const [formatValue, setFormatValue] = useState(null);
+const [formatValue, setFormatValue] = useState(item.formatValue);
 const [format, setFormat] = useState([
     { label: 'Vinyl', value: 'vinyl' },
     { label: 'CD', value: 'cd' },
@@ -28,7 +28,7 @@ const [format, setFormat] = useState([
 const [genre, setGenre] = useState(item.genre);
 
 const [conditionOpen, setConditionOpen] = useState(false);
-const [conditionValue, setConditionValue] = useState(null);
+const [conditionValue, setConditionValue] = useState(item.conditionValue);
 const [condition, setCondition] = useState([
     { label: 'Mint', value: 'mint' },
     { label: 'Near Mint', value: 'nearMint' },
@@ -74,13 +74,13 @@ return (
         />
 
         <DropDownPicker
+            closeAfterSelecting={ true }
             open={ formatOpen }
             value={ formatValue }
                 items={ format }
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
-                placeholder={ item.format }
                 onChangeValue={ (formatValue) => setFormatValue(formatValue) }
         />
         
@@ -99,7 +99,7 @@ return (
                 setOpen={ setConditionOpen }
                 setValue={ setConditionValue }
                 setItems={ setCondition }
-                placeholder={ item.condition }
+                onChangeValue={ (conditionValue) => setConditionValue(conditionValue) }
         />
 
         <Text style={{marginTop: 10}}></Text>

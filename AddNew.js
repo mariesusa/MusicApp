@@ -75,6 +75,7 @@ return (
         />
 
         <DropDownPicker
+            closeAfterSelecting={ true }
             open={ formatOpen }
             value={ formatValue }
                 items={ format }
@@ -94,6 +95,7 @@ return (
         />
 
         <DropDownPicker
+            closeAfterSelecting={ true }
             open={ conditionOpen }
             value={ conditionValue }
                 items={ condition }

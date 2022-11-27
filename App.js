@@ -8,9 +8,9 @@ import Home from './Home'
 import AddNew from './AddNew'
 import ListAll from './ListAll'
 import Edit from './Edit'
+import Search from './Search'
 
 const Stack = createNativeStackNavigator();
-const EditingStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function Editing() {
@@ -38,7 +38,9 @@ export default function App() {
               iconName = 'md-add-circle';
             } else if (route.name === 'List all') {
               iconName = 'md-list';
-            } 
+            } else if (route.name === 'Search') {
+              iconName = 'search';
+            }
 
             return <Ionicons name={ iconName } size={ 24 } color="black" />;
           },
@@ -47,6 +49,7 @@ export default function App() {
         <Tab.Screen name='Home' component={ Home } />
         <Tab.Screen name='Add new' component={ AddNew } />
         <Tab.Screen name='List all' component={ Editing } />
+        <Tab.Screen name='Search' component={ Search } />
       </Tab.Navigator>
     </NavigationContainer>
    ); 
