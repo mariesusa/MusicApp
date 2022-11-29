@@ -2,10 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TextInput, Keyboard, SafeAreaView } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { ListItem } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Feather, Entypo } from "@expo/vector-icons";
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
@@ -14,7 +11,7 @@ import database from './Firebase'
 export default function Search() {
 
 const [records, setRecords] = useState([]);
-const [searchPhrase, setSearchPhrase] = useState("");
+const [searchPhrase, setSearchPhrase] = useState('');
 const [clicked, setClicked] = useState(false);
 
 useEffect(() => {
@@ -27,10 +24,11 @@ useEffect(() => {
   });
 }, []);
 
-const Item = ({ artist, album }) => (
+const Item = ({ artist, album, year }) => (
     <View style={ styles.item }>
       <Text style={ styles.title }>{ artist }</Text>
       <Text style={ styles.details }>{ album }</Text>
+      <Text style={ styles.details }>{ year }</Text>
     </View>
   );
 
@@ -41,162 +39,181 @@ const listSeparator = () => {
                 height: 5,
                 width: '80%',
                 backgroundColor: '#fff',
-                marginLeft: '80%'
+                marginLeft: '100%',
+                padding: 2,
+                marginTop: 1,
             }}
         />
     );
 };
 
 renderItem = ({ item }) => {
-    // when no input, show all
-    if (searchPhrase === "") {
+  if (searchPhrase === '') {
+    return '';
+    }
+    if (item.artist.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
       return <Item artist={ item.artist }
-             Item album={ item.album } />;
+      />;
     }
-    // filter of the name
-    if (item.artist.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item artist={ item.artist } />;
+    if (item.album.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
+      return <Item album={ item.album } 
+      />;
     }
-    // filter of the description
-    if (item.album.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item album={item.album} />;
+    if (item.year.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
+      return <Item artist={ item.artist }
+                  album={ item.album }
+                  year={ item.year }
+      />;
     }
   };
 
 return (
 
     <View style={ styles.container }>
-        <Text style={ styles.header }>
-        Search and destroy
-        </Text>
-
-        <View>
-            <View style={
-                clicked
-                    ? styles.searchBar__clicked
-                    : styles.searchBar__unclicked
-                }
-            >
+      <View>
+        <View style={
+          clicked
+            ? styles.searchBar__clicked
+            : styles.searchBar__unclicked
+            }
+        >
+        
         <Feather
-            name="search"
-            size={20}
-            color="black"
-            style={{ marginLeft: 1 }}
+          name='search'
+          size={ 20 }
+          color='black'
+          style={{ marginLeft: 1 }}
         />
+
         <TextInput
-            style={styles.input}
-            placeholder="Search"
-            value={searchPhrase}
-            onChangeText={setSearchPhrase}
-            onFocus={() => {
-            setClicked(true);
-            }}
+          style={ styles.input }
+          placeholder='Search'
+          value={ searchPhrase }
+          onChangeText={ setSearchPhrase }
+          onFocus={() => {
+          setClicked(true);
+          }}
         />
-        {/* cross Icon, depending on whether the search bar is clicked or not */}
-        {clicked && (
-          <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-              setSearchPhrase("")
-            }}/>
+
+        { clicked && (
+          <Entypo 
+            name='cross' 
+            size={ 20 } 
+            color='black' 
+            style={{ padding: 1 }} 
+            onPress={() => { setSearchPhrase('') }}
+          />
         )}
+
       </View>
-      {/* cancel button, depending on whether the search bar is clicked or not */}
-      {clicked && (
-        <View>
-          <Button
-            
+
+      { clicked && ( 
+        <View style={{ alignItems: 'center' }}>
+
+          <Button 
+            style={ styles.button }
             titleStyle={{ fontWeight: '200'}}
-            title="CANCEL"
             buttonStyle={{
-                backgroundColor: '#000000',
-                borderRadius: 10,
-                marginTop: 15
+              backgroundColor: '#000000',
+              borderRadius: 10,
+              marginTop: 15
             }}
             containerStyle={{ width: '60%' }}
-                icon={{ name: 'cancel', color: '#fff' }}
+            icon={{ name: 'cancel', color: '#fff' }}
+            title='CANCEL'
             onPress={() => {
               Keyboard.dismiss();
               setClicked(false);
             }}
-          ></Button>
+          />
         </View>
       )}
         </View>
 
-        <Text style={{marginTop: 10}}></Text>
+      <Text style={{ marginTop: 10 }}></Text>
 
-        <SafeAreaView style={styles.list__container}>
       <View
+        style={ styles.list__container }
         onStartShouldSetResponder={() => {
           setClicked(false);
         }}
-    >
+      >
 
-      {!clicked && <Text style={styles.title}>Results</Text>}
+      { !clicked && <Text style={ styles.searchText }>Type something in the text field</Text> }
       
-
-        <FlatList
-          data={ records }
-          ItemSeparatorComponent={ listSeparator }
-          renderItem={ renderItem }
-          keyExtractor={ item => item.key }
-        />
+      <FlatList
+        data={ records }
+        ItemSeparatorComponent={ listSeparator }
+        renderItem={ renderItem }
+        keyExtractor={ item => item.key }
+      />
+      
       </View>
-    </SafeAreaView>
 
     </View>
 
-    );
+  );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        marginBottom: '20%'
+      flex: 1,
+      backgroundColor: '#ECECEB',
+      alignItems: 'center',
+      padding: 5,
+      marginBottom: 60,
+      marginTop: 10
     },
     header: {
-        fontSize: 35,
-        textAlign: 'center'
+      fontSize: 20,
+      textAlign: 'center'
     },
     text: {
-        textAlign: 'center'
+      textAlign: 'center'
     },
     searchBar__unclicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "95%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
+      padding: 10,
+      flexDirection: 'row',
+      width: '90%',
+      backgroundColor: '#d9dbda',
+      borderRadius: 15,
+      alignItems: 'center',
     },
     searchBar__clicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "80%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "space-evenly",
+      padding: 10,
+      flexDirection: 'row',
+      width: '90%',
+      backgroundColor: '#d9dbda',
+      borderRadius: 15,
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
     },
     input: {
-        fontSize: 20,
-        marginLeft: 10,
-        width: "90%",
+      fontSize: 15,
+      marginLeft: 10,
+      width: '90%',
     },
     item: {
-        margin: 30,
-        borderBottomWidth: 2,
-        borderBottomColor: "lightgrey"
-      },
-      title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 5,
-        fontStyle: "italic",
-      },
-      root: {
-        justifyContent: "center",
-        alignItems: "center",
-      },
+      margin: 30,
+      borderBottomWidth: 2,
+      borderBottomColor: 'lightgrey'
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'normal',
+      marginBottom: 5,
+    },
+    details: {
+      fontSize: 15
+    },
+    root: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    button: {
+      alignItems: 'center'
+    },
+    searchText: {
+      marginLeft: 32,
+    }
 });

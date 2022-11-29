@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
+import React, { useEffect, Component } from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { VictoryBar, VictoryChart } from 'victory-native';
+import { useTheme } from 'react-native-elements';
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
@@ -21,13 +22,13 @@ export default function Home() {
         const records = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : []; 
         const length = records.length;
 
-        const cassettes = records.filter((item) => item.format == 'cassette').map(({ format }) => ({ format }));
+        const cassettes = records.filter((item) => item.format == 'Cassette').map(({ format }) => ({ format }));
         const cassetteLength = cassettes.length;
 
-        const cds = records.filter((item) => item.format == 'cd').map(({ format }) => ({ format }));
+        const cds = records.filter((item) => item.format == 'Cd').map(({ format }) => ({ format }));
         const cdLength = cds.length;
 
-        const vinyls = records.filter((item) => item.format == 'vinyl') .map(({ format }) => ({ format }));
+        const vinyls = records.filter((item) => item.format == 'Vinyl').map(({ format }) => ({ format }));
         const vinylLength = vinyls.length;
 
         setLength(length)
@@ -38,9 +39,9 @@ export default function Home() {
         });
 }, []);
 
-  return (
-    <View>
-      <Text>
+return (
+  <View style={ styles.container }>
+    <Text>
       <HomeClass 
         hookValue1={ length }
         hookValue2={ cdLength }
@@ -48,8 +49,8 @@ export default function Home() {
         hookValue4={ vinylLength }
         >
       </HomeClass>
-      </Text>
-    </View>
+    </Text>
+  </View>
   )
 }
 
@@ -63,39 +64,43 @@ class HomeClass extends React.Component {
     const vinyls = this.props.hookValue4;
     
     return (
+      <View style={ styles.container }>
+          
+        <Text style={ styles.header }>
+          Music App
+        </Text>
+        <Text style={ styles.text }>
+          save your musics here
+        </Text>
 
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 2 }}>
-      <View styles={ styles.container }>
-          <Text style={ styles.header }>
-            Music App
-          </Text>
-          <Text style={ styles.text }>
-            save your musics here
-          </Text>
+        <Text style={ styles.header }>
+          { length }
+        </Text>
 
-          <Text style={ styles.header }>
-            { length }
-          </Text>
-          </View>
-          <View style={{ flex: 3 }}>
         <VictoryChart
           domainPadding={{ x: 15 }}
         >
           <VictoryBar
-            padding={{ left: 80, right: 80, top: 40 }}
-            alignment='middle'
-            data={[
-              { format: 'Cassettes', number: cassettes },
-              { format: 'CDs', number: cds },
-              { format: 'Vinyls', number: vinyls }
-            ]}
-          x='format'
-          y='number'
-        />
+            barRatio={0.5}
+              padding={{ left: 80, right: 80, top: 40 }}
+                alignment='middle'
+                  data={[
+                    { format: 'Cassettes', number: cassettes },
+                    { format: 'CDs', number: cds },
+                    { format: 'Vinyls', number: vinyls }
+                    ]}
+                  x='format'
+                  y='number'
+          />
         </VictoryChart>
-        </View>
-      </View>
+          
+          {/*<View style={{ flex: 2 }}>
+            <Image source={ require('./Cassette.jpg') } 
+              style={{ 
+                width: 100,
+                height: 100 }}
+            />
+              </View>*/}
       </View>
     )
   }
@@ -104,15 +109,19 @@ class HomeClass extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECECEB',
     alignItems: 'center',
+    padding: 5
   },
   header: {
-    fontSize: 35,
-    textAlign: 'center'
+    fontSize: 40,
+    textAlign: 'center',
+    padding: 5
   },
   text: {
-    textAlign: 'center'
+    fontSize: 20,
+    textAlign: 'center',
+    padding: 3
   }
 });
 

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Alert } from 'react-native';
 import { ListItem } from'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
@@ -9,6 +9,8 @@ import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
 
 export default function ListAll( { navigation } ) {
+
+const [showConfirmation, setShowConfirmation] = useState(true);
 
 const [records, setRecords] = useState([]);
 
@@ -22,76 +24,105 @@ useEffect(() => {
   });
 }, []);
 
-const deleteAlbum = (key) => {
-  remove(
-    ref(database, 'records/' + key),
-  )
-}
+const showConfirmationDialog = (key) => {
+  return Alert.alert(
+    'Are you sure?',
+    'Press delete if sure.',
+    [
+      {
+        text: 'Delete',
+        onPress: () => {
+          setShowConfirmation(false);
+          remove(
+            ref(database, 'records/' + key),
+          );
+        },
+      },
+      {
+        text: 'Cancel',
+      },
+    ]
+  );
+};
 
 const listSeparator = () => {
     return(
         <View
             style={{
                 height: 5,
-                width: '80%',
+                width: '85%',
                 backgroundColor: '#fff',
-                marginLeft: '80%'
+                marginLeft: '100%',
+                padding: 2,
             }}
         />
     );
 };
 
 renderItem = ({ item }) => (
-    <ListItem bottomDivider>
-      <ListItem.Content>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 10 }}>
-        <ListItem.Title>{ item.artist }</ListItem.Title>
-        <ListItem.Subtitle>{ item.album }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.year }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.format }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.genre }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.condition }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.picture }</ListItem.Subtitle>
-        <ListItem.Subtitle>{ item.info }</ListItem.Subtitle>
+  <ListItem bottomDivider>
+    <ListItem.Content>
+
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+
+        <View style={{ flex: 10 }}>
+          <ListItem.Title style={{ fontSize: 20 }}>{ item.artist }</ListItem.Title>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.album }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.year }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15, fontWeight: 'bold' }}>{ item.format }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.genre }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.condition }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.picture }</ListItem.Subtitle>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.info }</ListItem.Subtitle>
         </View>
+        
         <View style={{ flex: 1 }}>
-        <MaterialCommunityIcons name='trash-can' size={ 30 }
-              onPress={() => deleteAlbum(item.key)} />
+          <View style={{ flex: 1, marginTop: '110%' }}>
+          <MaterialCommunityIcons 
+            name='trash-can' 
+            size={ 40 }
+            onPress={() => showConfirmationDialog(item.key)} 
+          />
           </View>
-        <View style={{ flex: 1 }}>
-        <MaterialCommunityIcons name='clipboard-edit' size={ 30 }
-              onPress={() => {(navigation.navigate('Edit',
-                                                { item }
-                                              ));
-                                              }}                                              
-        />
+
+          <View style={{ flex: 2 }}>
+          <MaterialCommunityIcons 
+            name='clipboard-edit' 
+            size={ 36 }
+            onPress={() => {(navigation.navigate('Edit', { item } ));
+            }}                                              
+          />
           </View>
+
         </View>
-      </ListItem.Content>
-    </ListItem>
-  )
+        
+      </View>
+
+    </ListItem.Content>
+  </ListItem>
+)
 
 return (
    
     <View style={ styles.container }>
 
         <FlatList
-            data={ records }
-            ItemSeparatorComponent={ listSeparator }
-            renderItem={ renderItem }
-            keyExtractor={ item => item.key }
+          data={ records }
+          ItemSeparatorComponent={ listSeparator }
+          renderItem={ renderItem }
+          keyExtractor={ item => item.key }
         />
 
     </View>
 
-    );
+  );
 }
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#ECECEB',
       alignItems: 'center',
+      paddingTop: 5
     }
 });
