@@ -70,10 +70,10 @@ const showConfirmationDialog = () => {
 };
 
 return (
-    
-    <ScrollView 
-        automaticallyAdjustKeyboardInsets={ true }
-            contentContainerStyle={ styles.container }>
+
+    <View style={ styles.container }>
+        <ScrollView 
+            automaticallyAdjustKeyboardInsets={ true }>
 
         { <View style={{ flex: 2 }}>
             <Image source={ require('./ManyCassettes.jpg') } 
@@ -159,6 +159,7 @@ return (
         </View>
         
         { showConfirmation && <View style={ styles.box }></View> }
+
             <Button
                 style={ styles.button }
                 titleStyle={{ fontWeight: '200' }}
@@ -172,7 +173,7 @@ return (
                 onPress={() => showConfirmationDialog() }
                 title='SAVE'
             />
-        
+ 
         <View style={{ height: 30 }} />
 
         { <View style={{ flex: 2 }}>
@@ -181,10 +182,11 @@ return (
                 width: 500,
                 height: 45 }}
             />
+         
         </View> }
         
     </ScrollView>
-
+    </View>
     );
 };
 

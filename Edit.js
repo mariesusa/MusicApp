@@ -74,9 +74,9 @@ const showConfirmationDialog = () => {
 
 return (
 
-    <ScrollView 
-        automaticallyAdjustKeyboardInsets={ true }
-            contentContainerStyle={ styles.container }>
+    <View style={ styles.container }>
+        <ScrollView 
+        automaticallyAdjustKeyboardInsets={ true }>
 
         { <View style={{ flex: 2 }}>
             <Image source={ require('./ManyCassettes.jpg') } 
@@ -182,6 +182,7 @@ return (
         </View> }
 
     </ScrollView>
+    </View>
     
     );
 }

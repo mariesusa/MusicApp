@@ -7,6 +7,7 @@ import { Feather, Entypo } from "@expo/vector-icons";
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
+import { ListItem } from 'react-native-elements';
 
 export default function Search() {
 
@@ -25,11 +26,18 @@ useEffect(() => {
 }, []);
 
 const Item = ({ artist, album, year }) => (
-    <View style={ styles.item }>
-      <Text style={ styles.title }>{ artist }</Text>
-      <Text style={ styles.details }>{ album }</Text>
-      <Text style={ styles.details }>{ year }</Text>
-    </View>
+  
+  <ListItem bottomDivider>
+    <ListItem.Content>
+
+      <View style={{ flex: 10 }}>
+        <ListItem.Title style={ styles.title }>{ artist }</ListItem.Title>
+        <ListItem.Subtitle style={ styles.details }>{ album }</ListItem.Subtitle>
+        <ListItem.Subtitle style={ styles.details }>{ year }</ListItem.Subtitle>
+      </View>
+  
+    </ListItem.Content>
+  </ListItem>
   );
 
 const listSeparator = () => {
@@ -54,24 +62,18 @@ renderItem = ({ item }) => {
       return <Item artist={ item.artist }
                   album={ item.album }
                   year={ item.year }
-                  format={ item.formatValue }
-                  condition={ item.conditionValue }
       />;
     }
     if (item.album.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
       return <Item artist={ item.artist }
                   album={ item.album }
                   year={ item.year } 
-                  format={ item.formatValue }
-                  condition={ item.conditionValue }
       />;
     }
     if (item.year.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
       return <Item artist={ item.artist }
                   album={ item.album }
                   year={ item.year }
-                  format={ item.formatValue }
-                  condition={ item.conditionValue }
       />;
     }
   };
@@ -167,6 +169,7 @@ return (
         renderItem={ renderItem }
         keyExtractor={ item => item.key }
       />
+      <View style={{ height: 120 }} />
       
       </View>
 
@@ -214,13 +217,11 @@ const styles = StyleSheet.create({
       width: '90%',
     },
     item: {
-      margin: 20,
+      margin: 10,
       borderBottomWidth: 2,
-      borderBottomColor: 'lightgrey',
     },
     title: {
       fontSize: 20,
-      fontWeight: 'normal',
       marginBottom: 5,
     },
     details: {
