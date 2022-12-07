@@ -20,7 +20,7 @@ const [album, setAlbum] = useState(item.album);
 const [year, setYear] = useState(item.year);
 
 const [formatOpen, setFormatOpen] = useState(false);
-const [formatValue, setFormatValue] = useState();
+const [formatValue, setFormatValue] = useState(item.format);
 const [format, setFormat] = useState([
     { label: 'Vinyl', value: 'Vinyl' },
     { label: 'CD', value: 'Cd' },
@@ -30,7 +30,7 @@ const [format, setFormat] = useState([
 const [genre, setGenre] = useState(item.genre);
 
 const [conditionOpen, setConditionOpen] = useState(false);
-const [conditionValue, setConditionValue] = useState();
+const [conditionValue, setConditionValue] = useState(item.condition);
 const [condition, setCondition] = useState([
     { label: 'Mint', value: 'Mint' },
     { label: 'Near Mint', value: 'Near Mint' },
