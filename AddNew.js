@@ -1,21 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { KeyboardAvoidingView } from 'react-native';
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
 
 export default function AddNew() {
-
-/*let openImagePickerAsync = async () => {
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
-}*/
 
 const [showConfirmation, setShowConfirmation] = useState(true);
 
@@ -44,7 +38,6 @@ const [condition, setCondition] = useState([
     { label: 'Fair', value: 'Fair' },
 ]);
 
-const [picture, setPicture] = useState('');
 const [info, setInfo] = useState('');
 
 const showConfirmationDialog = () => {
@@ -58,7 +51,7 @@ const showConfirmationDialog = () => {
                     setShowConfirmation(false);
                     push(
                         ref(database, 'records/'),
-                        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'picture': picture, 'info': info }
+                        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'info': info }
                     );
                     setArtist('');
                     setAlbum('');
@@ -66,7 +59,6 @@ const showConfirmationDialog = () => {
                     setFormatValue(null);
                     setGenre('');
                     setConditionValue(null);
-                    setPicture('');
                     setInfo('');
                 },
             },
@@ -77,10 +69,21 @@ const showConfirmationDialog = () => {
     );
 };
 
-
 return (
     
-    <KeyboardAvoidingView style={ styles.container } enabled>
+    <ScrollView 
+        automaticallyAdjustKeyboardInsets={ true }
+            contentContainerStyle={ styles.container }>
+
+        { <View style={{ flex: 2 }}>
+            <Image source={ require('./ManyCassettes.jpg') } 
+              style={{ 
+                width: 500,
+                height: 45 }}
+            />
+        </View> }
+        
+        <View style={{ height: 50 }} />
         <View style={{ width: '100%' }}>
 
             <Input
@@ -121,7 +124,7 @@ return (
                 placeholder='Select format'   
             />
         
-            <Text style={{marginTop: 10}}></Text>
+            <Text style={{ marginTop: 10 }}></Text>
 
             <Input
                 style={ styles.input }
@@ -143,15 +146,7 @@ return (
                 placeholder='Select condition'   
             />
 
-            <Text style={{marginTop: 10}}></Text>
-        
-            <Input
-                style={ styles.input }
-                labelStyle={ styles.label }
-                placeholder='Picture URL' label='Picture'
-                onChangeText={ picture => setPicture(picture) }
-                value={ picture }
-            />
+            <Text style={{ marginTop: 10 }}></Text>
 
             <Input
                 style={ styles.input }
@@ -170,6 +165,7 @@ return (
                 buttonStyle={{
                     backgroundColor: '#000000',
                     borderRadius: 10,
+                    marginBottom: 20,
                 }}
                 containerStyle={{ width: '60%' }}
                 icon={{ name: 'save', color: '#fff' }}
@@ -177,7 +173,17 @@ return (
                 title='SAVE'
             />
         
-    </KeyboardAvoidingView>
+        <View style={{ height: 30 }} />
+
+        { <View style={{ flex: 2 }}>
+            <Image source={ require('./ManyCassettes.jpg') } 
+              style={{ 
+                width: 500,
+                height: 45 }}
+            />
+        </View> }
+        
+    </ScrollView>
 
     );
 };
@@ -187,8 +193,8 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ECECEB',
       alignItems: 'center',
-      padding: 5,
-      marginTop: 10,
+      paddingLeft: 5,
+      paddingRight: 5,
     },
     input: {
         fontSize: 15
@@ -200,5 +206,6 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-    }
+        marginBottom: 10,
+    },
 });

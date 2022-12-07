@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, FlatList, Alert } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Alert, Image } from 'react-native';
 import { ListItem } from'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
@@ -64,7 +64,14 @@ renderItem = ({ item }) => (
     <ListItem.Content>
 
       <View style={{ flex: 1, flexDirection: 'row' }}>
-
+      <Image source={ require('./SmallCassette.jpg') } 
+        style={{ 
+          height: 125,
+          width: 130,
+          padding: 3,
+          marginRight: 15,
+          }}
+          />
         <View style={{ flex: 10 }}>
           <ListItem.Title style={{ fontSize: 20 }}>{ item.artist }</ListItem.Title>
           <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.album }</ListItem.Subtitle>
@@ -72,7 +79,6 @@ renderItem = ({ item }) => (
           <ListItem.Subtitle style={{ fontSize: 15, fontWeight: 'bold' }}>{ item.format }</ListItem.Subtitle>
           <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.genre }</ListItem.Subtitle>
           <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.condition }</ListItem.Subtitle>
-          <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.picture }</ListItem.Subtitle>
           <ListItem.Subtitle style={{ fontSize: 15 }}>{ item.info }</ListItem.Subtitle>
         </View>
         
@@ -123,6 +129,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ECECEB',
       alignItems: 'center',
-      paddingTop: 5
-    }
+      paddingTop: 5,
+      marginRight: 5,
+    },
 });

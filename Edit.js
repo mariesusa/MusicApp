@@ -1,10 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { FlatList } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
 
 import { getDatabase, push, ref, onValue, remove, update } from 'firebase/database';
@@ -21,17 +20,17 @@ const [album, setAlbum] = useState(item.album);
 const [year, setYear] = useState(item.year);
 
 const [formatOpen, setFormatOpen] = useState(false);
-const [formatValue, setFormatValue] = useState(item.formatValue);
+const [formatValue, setFormatValue] = useState();
 const [format, setFormat] = useState([
     { label: 'Vinyl', value: 'Vinyl' },
     { label: 'CD', value: 'Cd' },
-    { label: 'Cassette', value: 'Cassette' },
+    { label: 'Cassette', value: 'Cassette'},
 ]);
 
 const [genre, setGenre] = useState(item.genre);
 
 const [conditionOpen, setConditionOpen] = useState(false);
-const [conditionValue, setConditionValue] = useState(item.conditionValue);
+const [conditionValue, setConditionValue] = useState();
 const [condition, setCondition] = useState([
     { label: 'Mint', value: 'Mint' },
     { label: 'Near Mint', value: 'Near Mint' },
@@ -41,7 +40,6 @@ const [condition, setCondition] = useState([
     { label: 'Fair', value: 'Fair' },
 ]);
 
-const [picture, setPicture] = useState(item.picture);
 const [info, setInfo] = useState(item.info);
 
 const albumKey = item.key
@@ -63,7 +61,7 @@ const showConfirmationDialog = () => {
                     setShowConfirmation(false);
                     update(
                         ref(database, 'records/' + albumKey),
-                        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'picture': picture, 'info': info }
+                        { 'artist': artist, 'album': album, 'year': year, 'format': formatValue, 'genre': genre, 'condition': conditionValue, 'info': info }
                     );
                 },
             },
@@ -76,8 +74,20 @@ const showConfirmationDialog = () => {
 
 return (
 
-    <KeyboardAvoidingView style={ styles.container } enabled>
-        <View style={{ width: '100%' , marginTop: 10 }}>
+    <ScrollView 
+        automaticallyAdjustKeyboardInsets={ true }
+            contentContainerStyle={ styles.container }>
+
+        { <View style={{ flex: 2 }}>
+            <Image source={ require('./ManyCassettes.jpg') } 
+              style={{ 
+                width: 500,
+                height: 45 }}
+            />
+        </View> }
+
+        <View style={{ height: 30 }} />
+        <View style={{ width: '100%' }}>
 
             <Input
                 style={ styles.input }
@@ -88,7 +98,7 @@ return (
             />
 
             <Input
-                    style={ styles.input }
+                style={ styles.input }
                 labelStyle={ styles.label }
                 label='Album'
                 placeholder={ item.album }
@@ -112,10 +122,10 @@ return (
                 setOpen={ setFormatOpen }
                 setValue={ setFormatValue }
                 setItems={ setFormat }
-                onChangeValue={ (formatValue) => setFormatValue(formatValue) }
+                onPress={ (formatValue) => setFormatValue(formatValue) }
             />
         
-            <Text style={{marginTop: 10}}></Text>
+            <Text style={{ marginTop: 10 }}></Text>
 
             <Input
                 style={ styles.input }
@@ -133,18 +143,10 @@ return (
                 setOpen={ setConditionOpen }
                 setValue={ setConditionValue }
                 setItems={ setCondition }
-                onChangeValue={ (conditionValue) => setConditionValue(conditionValue) }
+                onPress={ (conditionValue) => setConditionValue(conditionValue) }
             />
 
-            <Text style={{marginTop: 10}}></Text>
-        
-            <Input
-                style={ styles.input }
-                labelStyle={ styles.label }
-                label='Picture'
-                placeholder={ item.picture }
-                onChangeText={ picture => setPicture(picture) }
-            />
+            <Text style={{ marginTop: 10 }}></Text>
 
             <Input
                 style={ styles.input }
@@ -169,7 +171,17 @@ return (
                 onPress={() => showConfirmationDialog()}
             />
 
-    </KeyboardAvoidingView>
+        <View style={{ height: 20 }} />
+
+        { <View style={{ flex: 2 }}>
+            <Image source={ require('./ManyCassettes.jpg') } 
+                style={{ 
+                    width: 500,
+                    height: 45 }}
+            />
+        </View> }
+
+    </ScrollView>
     
     );
 }
@@ -179,17 +191,18 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ECECEB',
       alignItems: 'center',
-      padding: 5,
+      paddingLeft: 5,
+      paddingRight: 5,
     },
     input: {
-        fontSize: 15
+        fontSize: 15,
     },
     label: {
         fontSize: 20,
         fontWeight: 'normal',
-        color: 'black'
+        color: 'black',
     },
     button: {
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 });

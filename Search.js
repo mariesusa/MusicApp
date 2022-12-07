@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, FlatList, TextInput, Keyboard, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TextInput, Keyboard, Image } from 'react-native';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Feather, Entypo } from "@expo/vector-icons";
 
@@ -37,11 +37,10 @@ const listSeparator = () => {
         <View
             style={{
                 height: 5,
-                width: '80%',
+                width: '85%',
                 backgroundColor: '#fff',
                 marginLeft: '100%',
                 padding: 2,
-                marginTop: 1,
             }}
         />
     );
@@ -53,16 +52,26 @@ renderItem = ({ item }) => {
     }
     if (item.artist.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
       return <Item artist={ item.artist }
+                  album={ item.album }
+                  year={ item.year }
+                  format={ item.formatValue }
+                  condition={ item.conditionValue }
       />;
     }
     if (item.album.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
-      return <Item album={ item.album } 
+      return <Item artist={ item.artist }
+                  album={ item.album }
+                  year={ item.year } 
+                  format={ item.formatValue }
+                  condition={ item.conditionValue }
       />;
     }
     if (item.year.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))) {
       return <Item artist={ item.artist }
                   album={ item.album }
                   year={ item.year }
+                  format={ item.formatValue }
+                  condition={ item.conditionValue }
       />;
     }
   };
@@ -70,6 +79,17 @@ renderItem = ({ item }) => {
 return (
 
     <View style={ styles.container }>
+
+        { <View style={{ flex: 2 }}>
+          <Image source={ require('./ManyCassettes.jpg') } 
+            style={{ 
+              width: 500,
+              height: 45 }}
+          />
+        </View> }
+
+      <View style={{ height: 60 }} />
+
       <View>
         <View style={
           clicked
@@ -160,16 +180,16 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ECECEB',
       alignItems: 'center',
-      padding: 5,
+      paddingLeft: 5,
+      paddingRight: 5,
       marginBottom: 60,
-      marginTop: 10
     },
     header: {
       fontSize: 20,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     text: {
-      textAlign: 'center'
+      textAlign: 'center',
     },
     searchBar__unclicked: {
       padding: 10,
@@ -194,9 +214,9 @@ const styles = StyleSheet.create({
       width: '90%',
     },
     item: {
-      margin: 30,
+      margin: 20,
       borderBottomWidth: 2,
-      borderBottomColor: 'lightgrey'
+      borderBottomColor: 'lightgrey',
     },
     title: {
       fontSize: 20,
@@ -204,16 +224,16 @@ const styles = StyleSheet.create({
       marginBottom: 5,
     },
     details: {
-      fontSize: 15
+      fontSize: 15,
     },
     root: {
       justifyContent: 'center',
       alignItems: 'center',
     },
     button: {
-      alignItems: 'center'
+      alignItems: 'center',
     },
     searchText: {
       marginLeft: 32,
-    }
+    },
 });

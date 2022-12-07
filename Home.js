@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, Component } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { VictoryBar, VictoryChart } from 'victory-native';
-import { useTheme } from 'react-native-elements';
 
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import database from './Firebase'
@@ -65,16 +64,11 @@ class HomeClass extends React.Component {
     
     return (
       <View style={ styles.container }>
-          
         <Text style={ styles.header }>
           Music App
         </Text>
-        <Text style={ styles.text }>
-          save your musics here
-        </Text>
-
-        <Text style={ styles.header }>
-          { length }
+        <Text style={ styles.text1 }>
+        – save your musics here –
         </Text>
 
         <VictoryChart
@@ -94,13 +88,20 @@ class HomeClass extends React.Component {
           />
         </VictoryChart>
           
-          {/*<View style={{ flex: 2 }}>
+            {<View style={{ flex: 2 }}>
             <Image source={ require('./Cassette.jpg') } 
               style={{ 
-                width: 100,
-                height: 100 }}
+                width: 400,
+                height: 200 }}
             />
-              </View>*/}
+            </View>}
+
+          <Text style={ styles.text2 }>
+            Number of saved records: 
+          </Text>
+          <Text style={ styles.header }>
+            { length }
+          </Text>
       </View>
     )
   }
@@ -111,17 +112,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ECECEB',
     alignItems: 'center',
-    padding: 5
+    padding: 5,
   },
   header: {
     fontSize: 40,
     textAlign: 'center',
-    padding: 5
+    padding: 5,
   },
-  text: {
+  text1: {
     fontSize: 20,
     textAlign: 'center',
-    padding: 3
-  }
+    padding: 3,
+  },
+  text2: {
+    fontSize: 24,
+    textAlign: 'center',
+    padding: 3,
+    marginTop: 8,
+  },
 });
 
